@@ -1,9 +1,10 @@
 package com.baconz.apolloperformance
 
-class Greeting {
-    private val platform: Platform = getPlatform()
+import kotlin.js.JsExport
 
+@JsExport
+class Greeting {
     fun greet(): String {
-        return "Hello, ${platform.name}!"
+        return "Hello, world!"
     }
 }
