@@ -13,5 +13,14 @@ dependencyResolutionManagement {
     }
 }
 
+@Suppress("UnstableApiUsage")
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("deps") {
+            from(files("deps.versions.toml"))
+        }
+    }
+}
+
 rootProject.name = "ApolloPerformance"
 include(":shared")

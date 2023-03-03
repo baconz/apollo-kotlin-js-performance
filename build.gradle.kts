@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath(deps.apollo.gradle)
+    }
+}
+
 plugins {
-    kotlin("js").version("1.8.10").apply(false)
+    kotlin("js").version(deps.versions.kotlin).apply(false)
 }
