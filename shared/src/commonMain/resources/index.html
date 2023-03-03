@@ -5,7 +5,31 @@
     <title>Hello, Kotlin/JS!</title>
 </head>
 <body>
+    <h1>
+        Timing of KMM (MS): <span id="kotlin"></span>
+    </h1>
+
+    <h1>
+        Timing of JS (MS): <span id="js"></span>
+    </h1>
+
 
 </body>
 <script src="shared.js"></script>
+<script>
+    const kotlinStart = Date.now();
+    shared.com.baconz.apolloperformance.getAllFilmsAsKotlinPromise().then((f) => {
+        const timeTaken = Date.now() - kotlinStart;
+        console.log(timeTaken, f);
+        document.getElementById("kotlin").innerHTML = timeTaken;
+        const jsStart = Date.now();
+        shared.com.baconz.apolloperformance.getAllFilmsNativeJsPromise().then((f) => {
+            const timeTaken = Date.now() - jsStart;
+            console.log(timeTaken, f);
+            document.getElementById("js").innerHTML = timeTaken;
+         });
+    });
+
+
+</script>
 </html>
