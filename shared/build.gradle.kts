@@ -1,6 +1,16 @@
 plugins {
     kotlin("multiplatform")
     id("com.apollographql.apollo3")
+    id("com.apollographql.jsei")
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    }
+    google()
+    mavenCentral()
 }
 
 kotlin {
@@ -32,8 +42,18 @@ kotlin {
         }
     }
 }
+
+apolloJsei {
+    apolloJsei {
+        service("perf") {
+            graphqlFiles.from(fileTree("src/commonMain/graphql"))
+            packageName.set("com.baconz.gql.jsei")
+        }
+    }
+}
+
 apollo {
-    service("perf-test") {
+    service("perf") {
         packageName.set("com.baconz.gql")
         generateAsInternal.set(true)
         generateOptionalOperationVariables.set(false)

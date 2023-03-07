@@ -10,7 +10,11 @@
     </h1>
 
     <h1>
-        Timing of JS (MS): <span id="js"></span>
+        Timing of JS Raw Promise (MS): <span id="js"></span>
+    </h1>
+
+    <h1>
+        Timing of JS With Data Munge (MS): <span id="js-munge"></span>
     </h1>
 
 
@@ -27,6 +31,13 @@
             const timeTaken = Date.now() - jsStart;
             console.log(timeTaken, f);
             document.getElementById("js").innerHTML = timeTaken;
+
+            const mungeStart = Date.now();
+            shared.com.baconz.apolloperformance.getAllFilmsNativeAndMungeData().then((f) => {
+                const timeTaken = Date.now() - mungeStart;
+                console.log(timeTaken, f);
+                document.getElementById("js-munge").innerHTML = timeTaken;
+            });
          });
     });
 

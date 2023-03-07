@@ -1,5 +1,7 @@
 package com.baconz.apolloperformance
 
+import com.baconz.gql.jsei.AllFilmsQueryData
+import com.baconz.gql.jsei.AllFilmsQueryFilms
 import kotlinx.coroutines.*
 import kotlin.js.Promise
 
@@ -13,9 +15,13 @@ fun getAllFilmsAsKotlinPromise(): Promise<Array<Film>> {
 @JsModule("@apollo/client")
 @JsNonModule
 external object ApolloClientJs
+external interface AllFilmsQueryResponse {
+    val data: AllFilmsQueryData?
+    val errors: Array<Any>?
+}
 
 @JsExport
-fun getAllFilmsNativeJsPromise(): Any {
+fun getAllFilmsNativeJsPromise(): Promise<AllFilmsQueryResponse> {
     val holder = ApolloClientJs
     return js(
         """
@@ -24,5 +30,15 @@ fun getAllFilmsNativeJsPromise(): Any {
             var client = new ApolloClientJs.ApolloClient({link: link, cache: new ApolloClientJs.InMemoryCache()})
             client.query({query: ALL_FILMS, fetchPolicy: 'no-cache',});
         """
-    ).unsafeCast<Any>()
+    ).unsafeCast<Promise<AllFilmsQueryResponse>>()
+}
+
+
+@JsExport
+fun getAllFilmsNativeAndMungeData(): Promise<Array<Film>> {
+    return GlobalScope.async {
+        val queryData = getAllFilmsNativeJsPromise().await()
+        (queryData.data?.allFilms?.films as Array<AllFilmsQueryFilms?>?)?.filterNotNull()
+            ?.map { Film(it.title, it.director, it.releaseDate) }?.toTypedArray() ?: emptyArray()
+    }.asPromise()
 }
