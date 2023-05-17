@@ -1,0 +1,34 @@
+query SearchQuery($query: String!, $type: SearchType!, $first: Int) {
+    search(query: $query, type: $type first: $first) {
+        edges {
+            # textMatches {
+            #   property
+            #   fragment
+            # }
+            node {
+                ... on Repository {
+                    __typename
+                    name
+                    id
+                }
+                ... on PullRequest {
+                    __typename
+                    number
+                }
+                ... on Issue {
+                    closed
+                }
+                ... on Discussion {
+                    __typename
+                    closed
+                    number
+                    # body
+                }
+                ... on App {
+                    __typename
+                    name
+                }
+            }
+        }
+    }
+}

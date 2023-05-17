@@ -1,6 +1,12 @@
 plugins {
     kotlin("multiplatform")
+    // kotlin("js")
     id("com.apollographql.apollo3")
+}
+repositories {
+    mavenLocal()
+    google()
+    mavenCentral()
 }
 
 kotlin {
@@ -25,9 +31,12 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
-                implementation(npm("@apollo/client", "3.7.9", true))
-                implementation(npm("graphql", "16.6.0"))
-                implementation(npm("react", "18.2.0"))
+                api("org.jetbrains.kotlin-wrappers:kotlin-js:1.0.0-pre.515")
+
+                // implementation(npm("benchmark", "2.1.2", true))
+                // implementation(npm("@apollo/client", "3.7.9", true))
+                // implementation(npm("graphql", "16.6.0"))
+                // implementation(npm("react", "18.2.0"))
             }
         }
     }
@@ -35,8 +44,10 @@ kotlin {
 apollo {
     service("perf-test") {
         packageName.set("com.baconz.gql")
-        generateAsInternal.set(true)
+        generateAsInternal.set(false)
         generateOptionalOperationVariables.set(false)
+        codegenModels.set("responseBased")
+        jsExport.set(true)
 //
 //        mapScalar("GraphQLBoolean", "kotlin.Boolean")
 //        mapScalar("GraphQLFloat", "kotlin.Float")
